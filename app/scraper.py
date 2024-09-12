@@ -3,12 +3,14 @@ import asyncio
 import json
 from bs4 import BeautifulSoup 
 from .fulltext import fetch_article
+from datetime import datetime, timedelta
 
 api_key = 'AIzaSyBvOwq0KQb5kysEGotH9iJyDszrmUsgaAs'
 search_engine_id = 'f6f224622aa0846a3'
 
 async def fetch_results(query):
-    url = f'https://www.googleapis.com/customsearch/v1?q={query}&key={api_key}&cx={search_engine_id}'
+    date_15_days_ago = (datetime.now() - timedelta(days=20)).strftime("%Y-%m-%d")
+    url = f'https://www.googleapis.com/customsearch/v1?q={query}&dateRestrict=d15&key={api_key}&cx={search_engine_id}'
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(url)
